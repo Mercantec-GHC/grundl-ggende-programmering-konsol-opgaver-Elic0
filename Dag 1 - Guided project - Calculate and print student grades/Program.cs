@@ -32,8 +32,8 @@ double zahirahGpa = (zahirah1+zahirah2+zahirah3+zahirah4+zahirah5) / currentAssi
 double jeongGpa = (jeong1+jeong2+jeong3+jeong4+jeong5) / currentAssignments;
 double GPA = (nicolasGpa+zahirahGpa+sophiaGpa+jeongGpa) / AmountOfPeople;
 
-Console.WriteLine(sophiaGpa);
-Console.WriteLine(nicolasGpa);
-Console.WriteLine(zahirahGpa);
-Console.WriteLine(jeongGpa);
-Console.WriteLine(GPA);
+Console.WriteLine("Sophia: " + sophiaGpa);
+Console.WriteLine("Nicolas: " + nicolasGpa);
+Console.WriteLine("Zahira: " + zahirahGpa);
+Console.WriteLine("Jeong: " + jeongGpa);
+Console.WriteLine("class GPA: " + GPA);
