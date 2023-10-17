@@ -136,7 +136,6 @@ foreach (string name in studentNames)
 }
 
 
-// required for running in VS Code (keeps the Output windows open to view results)
 decimal classAverage = classScores / studentAmount;
 Console.WriteLine($"\nClass Average: {classAverage:F1}");
 
