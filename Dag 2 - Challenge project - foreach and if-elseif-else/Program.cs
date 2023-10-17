@@ -21,8 +21,9 @@ This C# console application is designed to:
 using System;
 
 int examAssignments = 5;
+int studentAmount = 4;
 
-string[] studentNames = new string[] { "Sophia", "Andrew", "Emma", "Logan" };
+string[] studentNames = new string[] { "Sophia", "Andrew", "Emma", "Logan", };
 
 int[] sophiaScores = new int[] { 90, 86, 87, 98, 100, 94, 90 };
 int[] andrewScores = new int[] { 92, 89, 81, 96, 90, 89 };
@@ -36,6 +37,8 @@ string currentStudentLetterGrade = "";
 // display the header row for scores/grades
 Console.Clear();
 Console.WriteLine("Student\t\tGrade\tLetter Grade\n");
+
+decimal classScores = 0;
 
 /*
 The outer foreach loop is used to:
@@ -60,6 +63,8 @@ foreach (string name in studentNames)
 
     else if (currentStudent == "Logan")
         studentScores = loganScores;
+    else
+        continue;
 
     int sumAssignmentScores = 0;
 
@@ -127,8 +132,13 @@ foreach (string name in studentNames)
     // Sophia:         92.2    A-
 
     Console.WriteLine($"{currentStudent}\t\t{currentStudentGrade}\t{currentStudentLetterGrade}");
+    classScores += currentStudentGrade;
 }
 
+
 // required for running in VS Code (keeps the Output windows open to view results)
+decimal classAverage = classScores / studentAmount;
+Console.WriteLine($"\nClass Average: {classAverage:F1}");
+
 Console.WriteLine("\n\rPress the Enter key to continue");
 Console.ReadLine();
