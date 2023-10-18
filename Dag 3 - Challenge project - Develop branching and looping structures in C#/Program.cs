@@ -90,10 +90,10 @@ do
     Console.WriteLine("Welcome to the Contoso PetFriends app. Your main menu options are:");
     Console.WriteLine(" 1. List all of our current pet information");
     Console.WriteLine(" 2. Add a new animal friend to the ourAnimals array");
-    Console.WriteLine(" 3. Ensure animal ages and physical descriptions are complete");
+    Console.WriteLine(" 3. edit an animal''s age");
     Console.WriteLine(" 4. Ensure animal nicknames and personality descriptions are complete");
-    Console.WriteLine(" 5. Edit an animal’s age");
-    Console.WriteLine(" 6. Edit an animal’s personality description");
+    Console.WriteLine(" 5. Ensure animal ages and physical descriptions are complete");
+    Console.WriteLine(" 6. Edit an animal''s personality description");
     Console.WriteLine(" 7. Display all cats with a specified characteristic");
     Console.WriteLine(" 8. Display all dogs with a specified characteristic");
     Console.WriteLine();
@@ -280,14 +280,77 @@ do
             }
 
             break;
-
         case "3":
-            // Ensure animal ages and physical descriptions are complete
-            Console.WriteLine("Challenge Project - please check back soon to see progress.");
-            Console.WriteLine("Press the Enter key to continue.");
-            readResult = Console.ReadLine();
-            break;
+            // Edit an animal's age
+            Console.WriteLine("You selected: 3. Edit an animal's age");
 
+            // Display the list of pets for editing
+            for (int i = 0; i < maxPets; i++)
+            {
+                if (ourAnimals[i, 0] != "ID #: ")
+                {
+                    Console.WriteLine($"Pet {i + 1}: {ourAnimals[i, 3]} ({ourAnimals[i, 2].Replace("Age: ", "")} years old)");
+                }
+            }
+
+            // Prompt the user to select a pet
+            int petToEdit = -1;
+            do
+            {
+                Console.WriteLine("Enter the number of the pet you want to edit (1, 2, 3, etc.) or type 'exit' to go back:");
+                readResult = Console.ReadLine();
+                if (readResult != null)
+                {
+                    if (readResult.ToLower() == "exit")
+                    {
+                        break; // Exit editing
+                    }
+                    if (int.TryParse(readResult, out petToEdit) && petToEdit >= 1 && petToEdit <= maxPets)
+                    {
+                        break; // Valid pet selection
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid pet number or type 'exit'.");
+                    }
+                }
+            } while (true);
+
+            if (petToEdit >= 1)
+            {
+                // User chose a pet to edit
+                Console.WriteLine($"Editing {ourAnimals[petToEdit - 1, 3]}'s age (current age: {ourAnimals[petToEdit - 1, 2].Replace("Age: ", "")}).");
+
+                // Prompt the user for the new age
+                do
+                {
+                    Console.WriteLine("Enter the new age or type '?' if unknown:");
+                    readResult = Console.ReadLine();
+                    if (readResult != null)
+                    {
+                        if (readResult == "?")
+                        {
+                            ourAnimals[petToEdit - 1, 2] = "Age: ?";
+                            break;
+                        }
+                        else if (int.TryParse(readResult, out petAge) && petAge >= 0)
+                        {
+                            ourAnimals[petToEdit - 1, 2] = "Age: " + petAge;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input. Please enter a valid age or type '?' if unknown.");
+                        }
+                    }
+                } while (true);
+
+                Console.WriteLine("Age updated successfully.");
+                Console.WriteLine("Press the Enter key to continue.");
+                readResult = Console.ReadLine();
+            }
+
+            break;
         case "4":
             // Ensure animal nicknames and personality descriptions are complete
             Console.WriteLine("Challenge Project - please check back soon to see progress.");
@@ -296,7 +359,7 @@ do
             break;
 
         case "5":
-            // Edit an animal’s age");
+            // Ensure animal ages and physical descriptions are complete
             Console.WriteLine("UNDER CONSTRUCTION - please check back next month to see progress.");
             Console.WriteLine("Press the Enter key to continue.");
             readResult = Console.ReadLine();
