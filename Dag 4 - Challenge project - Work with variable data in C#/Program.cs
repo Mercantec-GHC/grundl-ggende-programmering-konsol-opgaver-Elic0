@@ -11,9 +11,11 @@ string suggestedDonation = "";
 
 // variables that support data entry
 int maxPets = 8;
-string? readResult;
+string readResult;
 string menuSelection = "";
 decimal decimalDonation = 0.00m;
+string buyerName = "";
+decimal bidAmount = 0.00m;
 
 // array used to store runtime data
 string[,] ourAnimals = new string[maxPets, 7];
@@ -85,7 +87,7 @@ for (int i = 0; i < maxPets; i++)
 
     if (!decimal.TryParse(suggestedDonation, out decimalDonation))
     {
-        decimalDonation = 45.00m; // if suggestedDonation NOT a number, default to 45.00
+        decimalDonation = 20.00m; // if suggestedDonation NOT a number, default to 45.00
     }
     ourAnimals[i, 6] = $"Suggested Donation: {decimalDonation:C2}";
 }
@@ -99,6 +101,7 @@ do
     Console.WriteLine("Welcome to the Contoso PetFriends app. Your main menu options are:");
     Console.WriteLine(" 1. List all of our current pet information");
     Console.WriteLine(" 2. Display all dogs with a specified characteristic");
+    Console.WriteLine(" 3. bid on a pet from our selection");
     Console.WriteLine();
     Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
 
@@ -150,9 +153,6 @@ do
             bool noMatchesDog = true;
             string dogDescription = "";
 
-            // #4 update to "rotating" animation with countdown
-            string[] searchingIcons = { ".  ", ".. ", "..." };
-
             // loop ourAnimals array to search for matching animals
             for (int i = 0; i < maxPets; i++)
             {
@@ -166,12 +166,6 @@ do
                     for (int j = 5; j > -1; j--)
                     {
                         // #5 update "searching" message to show countdown 
-                        foreach (string icon in searchingIcons)
-                        {
-                            Console.Write($"\rsearching our dog {ourAnimals[i, 3]} for {dogCharacteristic} {icon}");
-                            Thread.Sleep(250);
-                        }
-
                         Console.Write($"\r{new String(' ', Console.BufferWidth)}");
                     }
 
@@ -198,6 +192,81 @@ do
             Console.WriteLine("\n\rPress the Enter key to continue");
             readResult = Console.ReadLine();
 
+            break;
+        case "3":
+            // Display pet information
+            Console.WriteLine("Pet Information:");
+            for (int i = 0; i < maxPets; i++)
+            {
+                if (ourAnimals[i, 0] != "ID #: ")
+                {
+                    Console.WriteLine();
+                    for (int j = 0; j < 7; j++)
+                    {
+                        Console.WriteLine(ourAnimals[i, j].ToString());
+                    }
+                }
+            }
+
+            Console.WriteLine("\r\nEnter the ID of the pet you want to bid on or type 'Exit' to exit:");
+            readResult = Console.ReadLine();
+
+            if (readResult.ToLower() == "exit")
+            {
+                break;
+            }
+
+            string selectedPetId = readResult;
+
+            // Find the selected pet by ID
+            int selectedPetIndex = -1;
+            for (int i = 0; i < maxPets; i++)
+            {
+                if (ourAnimals[i, 0].Contains("ID #: " + selectedPetId))
+                {
+                    selectedPetIndex = i;
+                    break;
+                }
+            }
+
+            if (selectedPetIndex == -1)
+            {
+                Console.WriteLine("Pet not found. Please enter a valid ID.");
+                break;
+            }
+
+            // Display pet information for the selected pet
+            Console.WriteLine("\nSelected Pet Information:");
+            for (int j = 0; j < 7; j++)
+            {
+                Console.WriteLine(ourAnimals[selectedPetIndex, j].ToString());
+            }
+
+            Console.WriteLine("\r\nEnter your name:");
+            buyerName = Console.ReadLine();
+
+            Console.WriteLine("Enter your bid amount:");
+            readResult = Console.ReadLine();
+
+            if (decimal.TryParse(readResult, out bidAmount))
+            {
+                if (bidAmount >= decimalDonation)
+                {
+                    Console.WriteLine($"Congratulations, {buyerName}! Your bid of {bidAmount:C2} is accepted.");
+                    decimalDonation = bidAmount;
+                    ourAnimals[selectedPetIndex, 6] = $"Current bid: {decimalDonation:C2}";
+                }
+                else
+                {
+                    Console.WriteLine($"Sorry, {buyerName}. Your bid of {bidAmount:C2} is too low.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid bid amount. Please enter a valid numeric value.");
+            }
+            Console.WriteLine("\nPress the Enter key to continue");
+            readResult = Console.ReadLine();
             break;
 
         default:
